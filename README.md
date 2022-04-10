@@ -71,7 +71,11 @@ Data: https://github.com/fireindark707/Schema_Matching_XGboost/tree/main/Test%20
 
 ## Cite
 
-@software{fireinfark707_Schema_Matching_by,
-author = {fireinfark707},
-title = {{Schema Matching by XGboost}}
+@software{fireinfark707_Schema_Matching_by_2022,  
+author = {fireinfark707},  
+license = {MIT},  
+month = {4},  
+title = {{Schema Matching by XGboost}},  
+url = {https://github.com/fireindark707/Schema_Matching_XGboost},  
+year = {2022}  
 }
