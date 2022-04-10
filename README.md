@@ -45,7 +45,8 @@ Cross Validation on Training Data(Each pair to be used as test data):
 - Average Recall: 0.82
 - Average F1: 0.73
 
-Confusion Matrix:
-| 0.92109479 | 0.07890521 |
-|------------|------------|
-| 0.1765625  | 0.8234375  |
+Average Confusion Matrix:
+|                | Negative(Truth) | Positive(Truth) |
+|----------------|-----------------|-----------------|
+| Negative(pred) | 0.92109479      | 0.07890521      |
+| Positive(pred) | 0.1765625       | 0.8234375       |
