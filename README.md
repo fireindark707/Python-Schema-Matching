@@ -3,7 +3,7 @@ Using XGboost to perform schema matching task on tables. Support multi-language 
 
 ## What is schema matching?
 
-![](https://media.springernature.com/original/springer-static/image/prt%3A978-3-319-77525-8%2F19/MediaObjects/978-3-319-77525-8_19_Part_Fig1-20_HTML.png)
+![](https://media.springernature.com/lw785/springer-static/image/prt%3A978-0-387-39940-9%2F19/MediaObjects/978-0-387-39940-9_19_Part_Fig4-962_HTML.jpg)
 
 Schema matching is the problem of finding potential associations between elements (most often attributes or relations) of two schemas. [https://link.springer.com/referenceworkentry/10.1007/978-3-319-77525-8_20]
 
