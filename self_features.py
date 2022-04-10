@@ -177,7 +177,7 @@ def extract_features(data_list):
     # If data is not numeric, give length features
     length_fts = numeric_features([len(str(d)) for d in data_list])
     # Give character features if the data is string
-    if data_type == "string":
+    if data_type == "string" or (not strict_numeric(data_list) and  mainly_numeric(data_list)):
         char_fts = character_features(data_list)
     else:
         char_fts = np.array([-1]*8)
