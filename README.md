@@ -84,6 +84,8 @@ Data: https://github.com/fireindark707/Schema_Matching_XGboost/tree/main/Test%20
 | website | 0          | 0          | 0          | 0          | 0          | 1(FP)      | 0          | 0          | 0(FN) | 0          |
 | col10   | 0          | 0          | 0          | 0          | 0          | 0          | 0          | 0          | 0     | 1(correct) |
 
+**F1 score: 0.9**
+
 ## Cite
 ```
 @software{fireinfark707_Schema_Matching_by_2022,  
