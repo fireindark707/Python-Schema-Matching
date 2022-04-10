@@ -21,17 +21,17 @@ See Data format in Training Data and Test Data folders. You need to put mapping.
 ## Usage
 
 ### 1.Construct features
-
+```
 python relation_features.py
-
+```
 ### 2.Train xgboost models
-
+```
 python train.py
-
+```
 ### 3.Calculate similarity matrix (inference)
-
+```
 Example: python cal_column_similarity.py -p Test\ Data/self -m model/2022-04-10-20-48-57
-
+```
 ## Feature Engineering
 
 Features: "is_url","is_numeric","is_date","is_string","numeric:mean", "numeric:min", "numeric:max", "numeric:variance","numeric:cv", "numeric:unique/len(data_list)", "length:mean", "length:min", "length:max", "length:variance","length:cv", "length:unique/len(data_list)", "whitespace_ratios:mean","punctuation_ratios:mean","special_character_ratios:mean","numeric_ratios:mean", "whitespace_ratios:cv","punctuation_ratios:cv","special_character_ratios:cv","numeric_ratios:cv", "colname:bleu_score", "colname:edit_distance","colname:lcs","colname:tsm_cosine", "colname:one_in_one"
@@ -70,7 +70,7 @@ Data: https://github.com/fireindark707/Schema_Matching_XGboost/tree/main/Test%20
 | col10   | 0          | 0          | 0          | 0          | 1(FP)      | 0          | 0          | 0          | 0     | 1(correct) |
 
 ## Cite
-
+```
 @software{fireinfark707_Schema_Matching_by_2022,  
 author = {fireinfark707},  
 license = {MIT},  
@@ -79,3 +79,4 @@ title = {{Schema Matching by XGboost}},
 url = {https://github.com/fireindark707/Schema_Matching_XGboost},  
 year = {2022}  
 }
+```
