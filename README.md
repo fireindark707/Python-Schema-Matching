@@ -34,6 +34,10 @@ python train.py
 ```
 Example: python cal_column_similarity.py -p Test\ Data/self -m model/2022-04-10-20-48-57
 ```
+Parameters:
+- -p: Path to test data folder, must contain "Table1.csv" and "Table2.csv"
+- -m: Path to trained model folder, which must contain at least one pair of ".model" file and ".threshold" file.
+- -t: Threshold, you can use this parameter to specify threshold value, suggest 0.9 for easy matching(column name very similar). Default value is calculated from training data.
 ## Feature Engineering
 
 Features: "is_url","is_numeric","is_date","is_string","numeric:mean", "numeric:min", "numeric:max", "numeric:variance","numeric:cv", "numeric:unique/len(data_list)", "length:mean", "length:min", "length:max", "length:variance","length:cv", "length:unique/len(data_list)", "whitespace_ratios:mean","punctuation_ratios:mean","special_character_ratios:mean","numeric_ratios:mean", "whitespace_ratios:cv","punctuation_ratios:cv","special_character_ratios:cv","numeric_ratios:cv", "colname:bleu_score", "colname:edit_distance","colname:lcs","colname:tsm_cosine", "colname:one_in_one"
