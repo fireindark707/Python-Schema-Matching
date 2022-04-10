@@ -40,7 +40,8 @@ Features: "is_url","is_numeric","is_date","is_string","numeric:mean", "numeric:m
 
 ## Performance
 
-Cross Validation on Training Data(Each pair to be used as test data): 
+### Cross Validation on Training Data(Each pair to be used as test data)
+
 - Average Precision: 0.70
 - Average Recall: 0.82
 - Average F1: 0.73
@@ -50,3 +51,18 @@ Average Confusion Matrix:
 |----------------|-----------------|-----------------|
 | Negative(pred) | 0.92109479      | 0.07890521      |
 | Positive(pred) | 0.1765625       | 0.8234375       |
+
+### Inference on Test Data
+
+|         | title      | text       | summary    | keywords   | url        | country    | language   | domain     | name  | timestamp  |
+|---------|------------|------------|------------|------------|------------|------------|------------|------------|-------|------------|
+| col1    | 1(correct) | 0          | 0          | 0          | 0          | 0          | 0          | 0          | 0     | 0          |
+| col2    | 0          | 1(correct) | 0          | 0          | 0          | 0          | 0          | 0          | 0     | 0          |
+| col3    | 0          | 0          | 1(correct) | 0          | 0          | 0          | 0          | 0          | 0     | 0          |
+| words   | 0          | 0          | 0          | 1(correct) | 0          | 0          | 0          | 0          | 0     | 0          |
+| link    | 0          | 0          | 0          | 0          | 1(correct) | 0          | 0          | 0          | 0     | 0          |
+| col6    | 0          | 0          | 0          | 0          | 0          | 1(correct) | 0          | 0          | 0     | 0          |
+| lang    | 0          | 0          | 0          | 0          | 0          | 0          | 1(correct) | 0          | 0     | 0          |
+| col8    | 0          | 0          | 0          | 0          | 0          | 0          | 0          | 1(correct) | 0     | 0          |
+| website | 0          | 0          | 0          | 0          | 0          | 1(FP)      | 0          | 0          | 0(FN) | 0          |
+| col10   | 0          | 0          | 0          | 0          | 1(FP)      | 0          | 0          | 0          | 0     | 1(correct) |
