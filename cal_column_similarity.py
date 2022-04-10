@@ -8,6 +8,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("-p","--path", help="path to the folder containing the test data")
 parser.add_argument("-m", "--model", help="path to the model")
+parser.add_argument("-t", "--threshold", help="threshold for inference")
 args = parser.parse_args()
 
 def create_similarity_matrix(pth,pred):
@@ -38,8 +39,11 @@ if __name__ == '__main__':
         print("start using model " + str(i))
         bst = xgb.Booster({'nthread': 4})  # init model
         bst.load_model(model_pth+"/"+str(i)+".model")
-        with open(model_pth+"/"+str(i)+".threshold",'r') as f:
-            best_threshold = float(f.read())
+        if args.threshold is not None:
+            best_threshold = float(args.threshold)
+        else:
+            with open(model_pth+"/"+str(i)+".threshold",'r') as f:
+                best_threshold = float(f.read())
         pred,pred_labels = test(bst,best_threshold,features,test_labels=np.ones(len(features)),type="inference")
         preds.append(pred)
         pred_labels_list.append(pred_labels)
