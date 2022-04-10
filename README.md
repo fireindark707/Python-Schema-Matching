@@ -1,7 +1,7 @@
 # Schema Matching by XGboost
 Using XGboost to perform schema matching task on tables. Support multi-language column names matching and can be used without column names.
 
-# Dependencies
+## Dependencies
 
 - sentence-transformers
 - xgboost
