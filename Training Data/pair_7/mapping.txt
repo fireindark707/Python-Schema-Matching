@@ -1,0 +1,5 @@
+<color, color>
+<text, text>
+<sn, sn>
+<time, time>
+<userid, id>

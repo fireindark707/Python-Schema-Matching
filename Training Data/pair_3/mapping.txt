@@ -1,0 +1,4 @@
+<subtopic, board>
+<標題, title>
+<作者, author>
+<日期, date>

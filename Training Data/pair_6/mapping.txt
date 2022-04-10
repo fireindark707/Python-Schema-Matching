@@ -1,0 +1,5 @@
+<col1, tag>
+<col2, link>
+<col3, media_thumbnail>
+<col4, title>
+<col5, publish_time>
