@@ -9,3 +9,11 @@ message: >-
 type: software
 authors:
   - given-names: fireinfark707
+repository-code: >-
+  https://github.com/fireindark707/Schema_Matching_XGboost
+abstract: >-
+  Using XGboost to perform schema matching task on
+  tables. Support multi-language column names
+  matching and can be used without column names.
+license: MIT
+date-released: '2022-04-10'
