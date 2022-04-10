@@ -32,7 +32,9 @@ python train.py
 ```
 ### 3.Calculate similarity matrix (inference)
 ```
-Example: python cal_column_similarity.py -p Test\ Data/self -m model/2022-04-10-20-48-57
+Example: 
+python cal_column_similarity.py -p Test\ Data/self -m model/2022-04-10-20-48-57
+python cal_column_similarity.py -p Test\ Data/authors -m model/2022-04-10-21-39-11 -t 0.9
 ```
 Parameters:
 - -p: Path to test data folder, must contain "Table1.csv" and "Table2.csv"
