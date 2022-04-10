@@ -13,7 +13,7 @@ feature_names = ["is_url","is_numeric","is_date","is_string","numeric:mean", "nu
                 "length:mean", "length:min", "length:max", "length:variance","length:cv", "length:unique/len(data_list)",
                 "whitespace_ratios:mean","punctuation_ratios:mean","special_character_ratios:mean","numeric_ratios:mean",
                 "whitespace_ratios:cv","punctuation_ratios:cv","special_character_ratios:cv","numeric_ratios:cv",
-                "colname:bleu_score", "colname:edit_distance","colname:lcs","colname:tsm_cosine","colname:tsm_dot", "colname:one_in_one", "colname:all_same"
+                "colname:bleu_score", "colname:edit_distance","colname:lcs","colname:tsm_cosine", "colname:one_in_one"
                 ]
 
 params = {
