@@ -82,7 +82,7 @@ Data: https://github.com/fireindark707/Schema_Matching_XGboost/tree/main/Test%20
 | lang    | 0          | 0          | 0          | 0          | 0          | 0          | 1(correct) | 0          | 0     | 0          |
 | col8    | 0          | 0          | 0          | 0          | 0          | 0          | 0          | 1(correct) | 0     | 0          |
 | website | 0          | 0          | 0          | 0          | 0          | 1(FP)      | 0          | 0          | 0(FN) | 0          |
-| col10   | 0          | 0          | 0          | 0          | 1(FP)      | 0          | 0          | 0          | 0     | 1(correct) |
+| col10   | 0          | 0          | 0          | 0          | 0          | 0          | 0          | 0          | 0     | 1(correct) |
 
 ## Cite
 ```
