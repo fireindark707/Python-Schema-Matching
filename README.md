@@ -5,7 +5,7 @@ Using XGboost to perform schema matching task on tables. Support multi-language 
 
 ![](https://media.springernature.com/original/springer-static/image/prt%3A978-3-319-77525-8%2F19/MediaObjects/978-3-319-77525-8_19_Part_Fig1-20_HTML.png)
 
-Schema mapping or matching is a task for recognizing relations between instances of a source schema S and instances of a target schema T.
+Schema mapping or matching is a task for recognizing relations between instances of a source schema S and instances of a target schema T. (source)[https://link.springer.com/referenceworkentry/10.1007/978-3-319-77525-8_20]
 
 ## Dependencies
 
