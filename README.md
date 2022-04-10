@@ -68,3 +68,10 @@ Data: https://github.com/fireindark707/Schema_Matching_XGboost/tree/main/Test%20
 | col8    | 0          | 0          | 0          | 0          | 0          | 0          | 0          | 1(correct) | 0     | 0          |
 | website | 0          | 0          | 0          | 0          | 0          | 1(FP)      | 0          | 0          | 0(FN) | 0          |
 | col10   | 0          | 0          | 0          | 0          | 1(FP)      | 0          | 0          | 0          | 0     | 1(correct) |
+
+## Cite
+
+@software{fireinfark707_Schema_Matching_by,
+author = {fireinfark707},
+title = {{Schema Matching by XGboost}}
+}
