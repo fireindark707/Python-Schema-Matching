@@ -52,7 +52,9 @@ Average Confusion Matrix:
 | Negative(pred) | 0.92109479      | 0.07890521      |
 | Positive(pred) | 0.1765625       | 0.8234375       |
 
-### Inference on Test Data
+### Inference on Test Data (Give confusing column names)
+
+Data: https://github.com/fireindark707/Schema_Matching_XGboost/tree/main/Test%20Data/self
 
 |         | title      | text       | summary    | keywords   | url        | country    | language   | domain     | name  | timestamp  |
 |---------|------------|------------|------------|------------|------------|------------|------------|------------|-------|------------|
