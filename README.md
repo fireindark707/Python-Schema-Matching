@@ -3,11 +3,13 @@ Using XGboost to perform schema matching task on tables. Support multi-language 
 
 ## Dependencies
 
-- sentence-transformers
-- xgboost
-- strsimpy
-- nltk
-- dateutil
+- numpy==1.19.5
+- pandas==1.1.5
+- nltk==3.6.5
+- python-dateutil==2.8.2
+- sentence-transformers==2.1.0
+- xgboost==1.5.2
+- strsimpy==0.2.1
 
 ## Data
 
