@@ -1,4 +1,4 @@
-# Schema_Matching_XGboost
+# Schema Matching by XGboost
 Using XGboost to perform schema matching task on tables.
 
 ## Data
