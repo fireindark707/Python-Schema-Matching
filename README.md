@@ -1,6 +1,14 @@
 # Schema Matching by XGboost
 Using XGboost to perform schema matching task on tables. Support multi-language column names matching and can be used without column names.
 
+# Dependencies
+
+- sentence-transformers
+- xgboost
+- strsimpy
+- nltk
+- dateutil
+
 ## Data
 
 See Data format in Training Data and Test Data folders. You need to put mapping.txt, Table1.csv and Table2.csv in new folders under Training Data. For Test Data, mapping.txt is not needed.
