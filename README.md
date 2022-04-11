@@ -1,5 +1,5 @@
 # Schema Matching by XGboost
-Using XGboost to perform schema matching task on tables. Support multi-language column names matching and can be used without column names.
+Using XGboost to perform schema matching task on tables. Support multi-language column names matching and can be used without column names. Both csv and json file type are supported.
 
 ## What is schema matching?
 
@@ -44,7 +44,7 @@ python cal_column_similarity.py -p Test\ Data/self -m model/2022-04-11-17-10-11 
 python cal_column_similarity.py -p Test\ Data/authors -m model/2022-04-11-17-10-11 -t 0.9
 ```
 Parameters:
-- -p: Path to test data folder, must contain "Table1.csv" and "Table2.csv"
+- -p: Path to test data folder, must contain **"Table1.csv" and "Table2.csv" or "Table1.json" and "Table2.json"**.
 - -m: Path to trained model folder, which must contain at least one pair of ".model" file and ".threshold" file.
 - -t: Threshold, you can use this parameter to specify threshold value, suggest 0.9 for easy matching(column name very similar). Default value is calculated from training data, which is around 0.15-0.2. This value is used for difficult matching(column name masked or very different).
 - -s: Strategy, there are two options: "one-to-one" and "one-to-many". "one-to-one" means that one column can only be matched to one column. "one-to-many" means that there is no restrictions. Default is "one-to-many".
