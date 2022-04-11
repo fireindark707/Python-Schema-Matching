@@ -57,14 +57,14 @@ Features: "is_url","is_numeric","is_date","is_string","numeric:mean", "numeric:m
 
 ### Cross Validation on Training Data(Each pair to be used as test data)
 
-- Average Precision: 0.70
-- Average Recall: 0.82
-- Average F1: 0.73
+- Average Precision: 0.750
+- Average Recall: 0.823
+- Average F1: 0.766
 
 Average Confusion Matrix:
 |                | Negative(Truth) | Positive(Truth) |
 |----------------|-----------------|-----------------|
-| Negative(pred) | 0.92109479      | 0.07890521      |
+| Negative(pred) | 0.94439985      | 0.05560015      |
 | Positive(pred) | 0.1765625       | 0.8234375       |
 
 ### Inference on Test Data (Give confusing column names)
