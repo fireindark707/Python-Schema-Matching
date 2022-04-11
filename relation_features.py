@@ -10,6 +10,7 @@ from strsimpy.damerau import Damerau
 from nltk.translate import bleu
 from nltk.translate.bleu_score import SmoothingFunction
 from sentence_transformers import SentenceTransformer, util
+import re
 
 model = SentenceTransformer('paraphrase-multilingual-mpnet-base-v2')
 smoothie = SmoothingFunction().method4
@@ -22,10 +23,8 @@ def transformer_similarity(text1, text2):
     """
     Use sentence transformer to calculate similarity between two sentences.
     """
-    text1 = text1.split("_")
-    text2 = text2.split("_")
-    text1 = [t.lower() for t in text1]
-    text2 = [t.lower() for t in text2]
+    text1,text2 = text1.lower(), text2.lower()
+    text1 = re.split(r'[\s\-\_\.]', text1)
     text1 = " ".join(text1).strip()
     text2 = " ".join(text2).strip()
     embeddings1 = model.encode(text1)

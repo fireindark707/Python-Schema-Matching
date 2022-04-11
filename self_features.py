@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import re
 from dateutil.parser import parse as parse_date
+import random
 
 unit_dict = {"万": 10000, "亿": 100000000, "萬": 10000, "億": 100000000, "K+": 1000, "M+": 1000000, "B+": 1000000000}
 
@@ -50,6 +51,10 @@ def extract_numeric(data_list):
     """
     Extracts numeric part(including float) from string list
     """
+    try:
+        data_list = [float(d) for d in data_list]
+    except:
+        pass
     numeric_part = []
     unit = []
     for data in data_list:
@@ -152,7 +157,7 @@ def extract_features(data_list):
     """
     Extract some features from the given data(column) or list
     """
-    data_list = [d for d in data_list if d is not np.NaN and d != "--"]
+    data_list = [d for d in data_list if d == d and d != "--"]
     if len(data_list) == 0:
         return 0
     data_types = ("url","numeric","date","string")
@@ -204,5 +209,5 @@ def make_self_features_from(filepath):
     return features
 
 if __name__ == '__main__':
-    features = make_self_features_from("Training Data/pair_3/Table2.csv")
+    features = make_self_features_from("Training Data/pair_7/Table1.csv")
     print(features)
