@@ -27,7 +27,32 @@ See Data format in Training Data and Test Data folders. You need to put mapping.
 - similarity_matrix_label.csv: Labels(0,1) for each column pairs.
 - similarity_matrix_value.csv: Average of raw values computed by all the xgboost models.
 
-## Usage
+## Package usage
+
+### Install 
+
+```
+pip install schema_matching
+```
+
+### Conduct schema matching
+
+```
+df_pred,df_pred_labels,predicted_pairs = schema_matching("Test Data/authors")
+```
+
+#### Return:
+df_pred: Predict value matrix, pd.DataFrame.
+df_pred_labels: Predict label matrix, pd.DataFrame.
+predicted_pairs: Predict label == 1 column pairs, in tuple format.
+
+#### Parameters:
+- pth: Path to test data folder, must contain **"Table1.csv" and "Table2.csv" or "Table1.json" and "Table2.json"**.
+- model_pth: Path to trained model folder, which must contain at least one pair of ".model" file and ".threshold" file. You don't need to specify this parameter.
+- threshold: Threshold, you can use this parameter to specify threshold value, suggest 0.9 for easy matching(column name very similar). Default value is calculated from training data, which is around 0.15-0.2. This value is used for difficult matching(column name masked or very different).
+- strategy: Strategy, there are three options: "one-to-one", "one-to-many" and "many-to-many". "one-to-one" means that one column can only be matched to one column. "one-to-many" means that columns in Table1 can only be matched to one column in Table2. "many-to-many" means that there is no restrictions. Default is "many-to-many".
+
+## Raw code usage
 
 ### 1.Construct features
 ```
@@ -47,7 +72,7 @@ Parameters:
 - -p: Path to test data folder, must contain **"Table1.csv" and "Table2.csv" or "Table1.json" and "Table2.json"**.
 - -m: Path to trained model folder, which must contain at least one pair of ".model" file and ".threshold" file.
 - -t: Threshold, you can use this parameter to specify threshold value, suggest 0.9 for easy matching(column name very similar). Default value is calculated from training data, which is around 0.15-0.2. This value is used for difficult matching(column name masked or very different).
-- -s: Strategy, there are two options: "one-to-one" and "one-to-many". "one-to-one" means that one column can only be matched to one column. "one-to-many" means that there is no restrictions. Default is "one-to-many".
+- -s: Strategy, there are three options: "one-to-one", "one-to-many" and "many-to-many". "one-to-one" means that one column can only be matched to one column. "one-to-many" means that columns in Table1 can only be matched to one column in Table2. "many-to-many" means that there is no restrictions. Default is "many-to-many".
 ## Feature Engineering
 
 Features: "is_url","is_numeric","is_date","is_string","numeric:mean", "numeric:min", "numeric:max", "numeric:variance","numeric:cv", "numeric:unique/len(data_list)", "length:mean", "length:min", "length:max", "length:variance","length:cv", "length:unique/len(data_list)", "whitespace_ratios:mean","punctuation_ratios:mean","special_character_ratios:mean","numeric_ratios:mean", "whitespace_ratios:cv","punctuation_ratios:cv","special_character_ratios:cv","numeric_ratios:cv", "colname:bleu_score", "colname:edit_distance","colname:lcs","colname:tsm_cosine", "colname:one_in_one", "instance_similarity:cosine"
