@@ -1,8 +1,9 @@
-import init
+from . import init
+from .self_features import make_self_features_from
+from .utils import table_column_filter
 import pandas as pd
 import numpy as np
 from numpy.linalg import norm
-from self_features import make_self_features_from
 import random
 import os
 import subprocess
@@ -12,7 +13,6 @@ from nltk.translate import bleu
 from nltk.translate.bleu_score import SmoothingFunction
 from sentence_transformers import util
 import re
-from utils import table_column_filter
 
 model = init.model
 

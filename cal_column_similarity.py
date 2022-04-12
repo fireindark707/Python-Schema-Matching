@@ -1,7 +1,7 @@
-import init
-from relation_features import make_data_from
-from utils import make_csv_from_json,table_column_filter
-from train import test
+from . import init
+from .relation_features import make_data_from
+from .utils import make_csv_from_json,table_column_filter
+from .train import test
 import numpy as np
 import pandas as pd
 import xgboost as xgb
