@@ -32,6 +32,8 @@ pip install schema_matching
 ### Conduct schema matching
 
 ```
+from schema_matching import schema_matching
+
 df_pred,df_pred_labels,predicted_pairs = schema_matching("Test Data/authors")
 ```
 
