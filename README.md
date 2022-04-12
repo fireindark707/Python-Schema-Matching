@@ -40,8 +40,8 @@ python train.py
 ### 3.Calculate similarity matrix (inference)
 ```
 Example: 
-python cal_column_similarity.py -p Test\ Data/self -m model/2022-04-11-17-10-11 -s one-to-one
-python cal_column_similarity.py -p Test\ Data/authors -m model/2022-04-11-17-10-11 -t 0.9
+python cal_column_similarity.py -p Test\ Data/self -m /model/2022-04-12-12-06-32 -s one-to-one
+python cal_column_similarity.py -p Test\ Data/authors -m /model/2022-04-12-12-06-32-11 -t 0.9
 ```
 Parameters:
 - -p: Path to test data folder, must contain **"Table1.csv" and "Table2.csv" or "Table1.json" and "Table2.json"**.
@@ -50,23 +50,24 @@ Parameters:
 - -s: Strategy, there are two options: "one-to-one" and "one-to-many". "one-to-one" means that one column can only be matched to one column. "one-to-many" means that there is no restrictions. Default is "one-to-many".
 ## Feature Engineering
 
-Features: "is_url","is_numeric","is_date","is_string","numeric:mean", "numeric:min", "numeric:max", "numeric:variance","numeric:cv", "numeric:unique/len(data_list)", "length:mean", "length:min", "length:max", "length:variance","length:cv", "length:unique/len(data_list)", "whitespace_ratios:mean","punctuation_ratios:mean","special_character_ratios:mean","numeric_ratios:mean", "whitespace_ratios:cv","punctuation_ratios:cv","special_character_ratios:cv","numeric_ratios:cv", "colname:bleu_score", "colname:edit_distance","colname:lcs","colname:tsm_cosine", "colname:one_in_one"
+Features: "is_url","is_numeric","is_date","is_string","numeric:mean", "numeric:min", "numeric:max", "numeric:variance","numeric:cv", "numeric:unique/len(data_list)", "length:mean", "length:min", "length:max", "length:variance","length:cv", "length:unique/len(data_list)", "whitespace_ratios:mean","punctuation_ratios:mean","special_character_ratios:mean","numeric_ratios:mean", "whitespace_ratios:cv","punctuation_ratios:cv","special_character_ratios:cv","numeric_ratios:cv", "colname:bleu_score", "colname:edit_distance","colname:lcs","colname:tsm_cosine", "colname:one_in_one", "instance_similarity:cosine"
 
-- tsm_cosine: cosine similarity computed by sentence-transformers using "paraphrase-multilingual-mpnet-base-v2". Support multi-language column names matching.
+- tsm_cosine: Cosine similarity of column names computed by sentence-transformers using "paraphrase-multilingual-mpnet-base-v2". Support multi-language column names matching.
+- instance_similarity:cosine: Select 20 instances each string column and compute its mean embedding using sentence-transformers. Cosine similarity is computed by each pairs. 
 
 ## Performance
 
 ### Cross Validation on Training Data(Each pair to be used as test data)
 
-- Average Precision: 0.750
-- Average Recall: 0.823
+- Average Precision: 0.755
+- Average Recall: 0.829
 - Average F1: 0.766
 
 Average Confusion Matrix:
 |                | Negative(Truth) | Positive(Truth) |
 |----------------|-----------------|-----------------|
-| Negative(pred) | 0.94439985      | 0.05560015      |
-| Positive(pred) | 0.1765625       | 0.8234375       |
+| Negative(pred) | 0.94343111      | 0.05656889      |
+| Positive(pred) | 0.17135417       | 0.82864583       |
 
 ### Inference on Test Data (Give confusing column names)
 
@@ -74,18 +75,18 @@ Data: https://github.com/fireindark707/Schema_Matching_XGboost/tree/main/Test%20
 
 |         | title      | text       | summary    | keywords   | url        | country    | language   | domain     | name  | timestamp  |
 |---------|------------|------------|------------|------------|------------|------------|------------|------------|-------|------------|
-| col1    | 1(TP) | 0          | 0          | 0          | 0          | 0          | 0          | 0          | 0     | 0          |
-| col2    | 0          | 1(TP) | 0          | 0          | 0          | 0          | 0          | 0          | 0     | 0          |
+| col1    | 1(FN) | 0  | 0          | 0          | 0          | 0          | 0          | 0          | 0     | 0          |
+| col2    | 0          | 1(TP) | 0  | 0          | 0          | 0          | 0          | 0          | 0     | 0          |
 | col3    | 0          | 0          | 1(TP) | 0          | 0          | 0          | 0          | 0          | 0     | 0          |
 | words   | 0          | 0          | 0          | 1(TP) | 0          | 0          | 0          | 0          | 0     | 0          |
 | link    | 0          | 0          | 0          | 0          | 1(TP) | 0          | 0          | 0          | 0     | 0          |
 | col6    | 0          | 0          | 0          | 0          | 0          | 1(TP) | 0          | 0          | 0     | 0          |
 | lang    | 0          | 0          | 0          | 0          | 0          | 0          | 1(TP) | 0          | 0     | 0          |
 | col8    | 0          | 0          | 0          | 0          | 0          | 0          | 0          | 1(TP) | 0     | 0          |
-| website | 0          | 0          | 0          | 0          | 0          | 1(FP)      | 0          | 0          | 0(FN) | 0          |
+| website | 0          | 0          | 0          | 0          | 0          | 0          | 0          | 0          | 0(FN) | 0          |
 | col10   | 0          | 0          | 0          | 0          | 0          | 0          | 0          | 0          | 0     | 1(TP) |
 
-**F1 score: 0.9**
+**F1 score: 0.889**
 
 ## Cite
 ```
