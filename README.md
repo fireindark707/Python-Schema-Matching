@@ -2,7 +2,7 @@
 
 # Python Schema Matching by XGboost and Sentence-Transformers
 
-Using XGboost to perform schema matching task on tables. Support multi-language column names and instances matching and can be used without column names. Both csv and json file type are supported.
+A python tool using XGboost and sentence-transformers to perform schema matching task on tables. Support multi-language column names and instances matching and can be used without column names. Both csv and json file type are supported.
 
 ## What is schema matching?
 
