@@ -26,7 +26,7 @@ Schema matching is the problem of finding potential associations between element
 ### Install 
 
 ```
-pip install schema_matching
+pip install schema-matching
 ```
 
 ### Conduct schema matching
