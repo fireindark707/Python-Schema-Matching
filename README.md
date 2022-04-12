@@ -52,7 +52,7 @@ predicted_pairs: Predict label == 1 column pairs, in tuple format.
 - threshold: Threshold, you can use this parameter to specify threshold value, suggest 0.9 for easy matching(column name very similar). Default value is calculated from training data, which is around 0.15-0.2. This value is used for difficult matching(column name masked or very different).
 - strategy: Strategy, there are three options: "one-to-one", "one-to-many" and "many-to-many". "one-to-one" means that one column can only be matched to one column. "one-to-many" means that columns in Table1 can only be matched to one column in Table2. "many-to-many" means that there is no restrictions. Default is "many-to-many".
 
-## Raw code usage
+## Raw code usage: Training
 
 ### 1.Construct features
 ```
