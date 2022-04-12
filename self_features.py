@@ -38,6 +38,7 @@ def mainly_numeric(data_list):
     """
     cnt = 0
     for data in data_list:
+        data = str(data)
         data = data.replace(",", "")
         for unit in unit_dict.keys():
             data = data.replace(unit, "")
@@ -171,8 +172,6 @@ def extract_features(data_list):
     Extract some features from the given data(column) or list
     """
     data_list = [d for d in data_list if d == d and d != "--"]
-    if len(data_list) == 0:
-        return 0
     data_types = ("url","numeric","date","string")
     # Classify the data's type, URL or Date or Numeric
     if is_url(data_list):
@@ -204,18 +203,15 @@ def extract_features(data_list):
     output_features = np.concatenate((data_type_feature, num_fts, length_fts, char_fts, deep_fts))
     return output_features
 
-def make_self_features_from(filepath):
+def make_self_features_from(table_df):
     """
     Extracts features from the given table path and returns a feature table.
     """
-    df = load_table(filepath)
     features = None
-    for column in df.columns:
+    for column in table_df.columns:
         if "Unnamed:" in column:
             continue
-        fts = extract_features(df[column])
-        if type(fts) == int:
-            continue
+        fts = extract_features(table_df[column])
         fts = fts.reshape(1, -1)
         if features is None:
             features = fts
@@ -224,5 +220,6 @@ def make_self_features_from(filepath):
     return features
 
 if __name__ == '__main__':
-    features = make_self_features_from("Training Data/pair_7/Table1.csv")
+    features = make_self_features_from("Test Data/0archive/Table2.csv")
     print(features)
+    print(features.shape)

@@ -12,6 +12,7 @@ from nltk.translate import bleu
 from nltk.translate.bleu_score import SmoothingFunction
 from sentence_transformers import util
 import re
+from utils import table_column_filter
 
 model = init.model
 
@@ -40,7 +41,7 @@ def read_mapping(mapping_file):
     """
     Read mapping file and return a set.
     """
-    if not os.path.exists(mapping_file):
+    if mapping_file is None or not os.path.exists(mapping_file):
         return set()
     with open(mapping_file, 'r') as f:
         readed = f.readlines()
@@ -57,20 +58,20 @@ def make_combinations_labels(columns1, columns2, mapping ,type="train"):
     Make combinations from columns1 list and columns2 list. Label them using mapping.
     """
     labels = {}
-    for c1 in columns1:
-        for c2 in columns2:
+    for i,c1 in enumerate(columns1):
+        for j,c2 in enumerate(columns2):
             if (c1, c2) in mapping or (c2, c1) in mapping:
-                labels[(c1, c2)] = 1
+                labels[(i, j)] = 1
             else:
-                labels[(c1, c2)] = 0
+                labels[(i, j)] = 0
     # sample negative labels
     if type == "train":
         combinations_count = len(labels)
         for i in range(combinations_count*2):
             if sum(labels.values()) >= 0.1 * len(labels):
                 break
-            c1 = random.choice(columns1)
-            c2 = random.choice(columns2)
+            c1 = random.choice(range(len(columns1)))
+            c2 = random.choice(range(len(columns2)))
             if (c1, c2) in labels and labels[c1, c2] == 0:
                 del labels[(c1, c2)]
     return labels
@@ -93,24 +94,18 @@ def get_instance_similarity(embeddings1, embeddings2):
     """
     cosine_similarity = np.inner(embeddings1, embeddings2) / (norm(embeddings1) * norm(embeddings2))
     return np.array([cosine_similarity])
-
-def make_data_from(folder_path,type="train"):
+    
+def make_data_from(table1_df, table2_df,mapping_file=None,type="train"):
     """
-    Read data from folder and make relational features and labels as a matrix.
+    Read data from 2 table dataframe, mapping file path and make relational features and labels as a matrix.
     """
-    mapping_file = folder_path + "/" + "mapping.txt"
-    table1 = folder_path + "/" + "Table1.csv"
-    table2 = folder_path + "/" + "Table2.csv"
-
     mapping = read_mapping(mapping_file)
-    table1_df = pd.read_csv(table1)
-    table2_df = pd.read_csv(table2)
-    columns1 = [c for c in list(table1_df.columns) if not "Unnamed:" in c]
-    columns2 = [c for c in list(table2_df.columns) if not "Unnamed:" in c]
+    columns1 = list(table1_df.columns)
+    columns2 = list(table2_df.columns)
 
     combinations_labels = make_combinations_labels(columns1, columns2, mapping,type)
-    table1_features = make_self_features_from(table1)
-    table2_features = make_self_features_from(table2)
+    table1_features = make_self_features_from(table1_df)
+    table2_features = make_self_features_from(table2_df)
 
     column_name_embeddings = {preprocess_text(k):model.encode(preprocess_text(k)) for k in columns1+columns2}
 
@@ -118,15 +113,15 @@ def make_data_from(folder_path,type="train"):
     output_feature_table = np.zeros((len(combinations_labels), table1_features.shape[1] - 768+ additional_feature_num), dtype=np.float32)
     output_labels = np.zeros(len(combinations_labels), dtype=np.int32)
     for i, (combination,label) in enumerate(combinations_labels.items()):
-        c1_name, c2_name = combination
-        c1 = columns1.index(c1_name)
-        c2 = columns2.index(c2_name)
+        c1,c2 = combination
+        c1_name = columns1[c1]
+        c2_name = columns2[c2]
         difference_features_percent = np.abs(table1_features[c1] - table2_features[c2]) / (table1_features[c1] + table2_features[c2] + 1e-8)
         c1_name = preprocess_text(c1_name)
         c2_name = preprocess_text(c2_name)
         colnames_features = get_colnames_features(c1_name, c2_name,column_name_embeddings)
         instance_similarity = get_instance_similarity(table1_features[c1][-768:], table2_features[c2][-768:])
-        output_feature_table[i,:] = np.concatenate((difference_features_percent[:-768], colnames_features,instance_similarity))
+        output_feature_table[i,:] = np.concatenate((difference_features_percent[:-768], colnames_features, instance_similarity))
         output_labels[i] = label
         # add column names mask for training data
         if type == "train" and i % 5 == 0:
@@ -153,10 +148,15 @@ if __name__ == '__main__':
     for folder in folder_list:
         print("start extracting data from " + folder)
         data_folder = "Training Data/" + folder
-        features,labels = make_data_from(data_folder,"train")
+        table1_df = pd.read_csv(data_folder + "/Table1.csv")
+        table2_df = pd.read_csv(data_folder + "/Table2.csv")
+        table1_df = table_column_filter(table1_df)
+        table2_df = table_column_filter(table2_df)
+        mapping_file = data_folder + "/mapping.txt"
+        features,labels = make_data_from(table1_df, table2_df, mapping_file,type="train")
         train_features[folder] = features
         train_labels[folder] = labels
-        features,labels = make_data_from(data_folder,"test")
+        features,labels = make_data_from(table1_df, table2_df, mapping_file,type="test")
         test_features[folder] = features
         test_labels[folder] = labels
 
