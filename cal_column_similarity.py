@@ -1,3 +1,4 @@
+import init
 from relation_features import make_data_from
 from utils import make_csv_from_json
 from train import test
@@ -6,14 +7,16 @@ import pandas as pd
 import xgboost as xgb
 import os
 import argparse
+import time
+
 parser = argparse.ArgumentParser()
 parser.add_argument("-p","--path", help="path to the folder containing the test data")
 parser.add_argument("-m", "--model", help="path to the model")
 parser.add_argument("-t", "--threshold", help="threshold for inference")
-parser.add_argument("-s", "--strategy", help="one-to-one or one-to-many", default="one-to-many")
+parser.add_argument("-s", "--strategy", help="one-to-one or many-to-many or one-to-many", default="many-to-many")
 args = parser.parse_args()
 
-def create_similarity_matrix(pth,preds,pred_labels_list,strategy="one-to-many"):
+def create_similarity_matrix(pth,preds,pred_labels_list,strategy="many-to-many"):
     """
     Create a similarity matrix from the prediction
     """
@@ -31,17 +34,22 @@ def create_similarity_matrix(pth,preds,pred_labels_list,strategy="one-to-many"):
     # create similarity matrix for pred values 
     preds_matrix = np.array(preds).reshape(len(df1_cols),len(df2_cols))
     # create similarity matrix for pred labels
-    if strategy == "one-to-many":
+    if strategy == "many-to-many":
         pred_labels_matrix = np.array(pred_labels).reshape(len(df1_cols),len(df2_cols))
-    elif strategy == "one-to-one":
+    else:
         pred_labels_matrix = np.zeros((len(df1_cols),len(df2_cols)))
         for i in range(len(df1_cols)):
             for j in range(len(df2_cols)):
                 if pred_labels[i*len(df2_cols)+j] == 1:
-                    max_row = max(preds_matrix[i,:])
-                    max_col = max(preds_matrix[:,j])
-                    if preds_matrix[i,j] == max_row and preds_matrix[i,j] == max_col:
-                        pred_labels_matrix[i,j] = 1
+                    if strategy == "one-to-one":
+                        max_row = max(preds_matrix[i,:])
+                        max_col = max(preds_matrix[:,j])
+                        if preds_matrix[i,j] == max_row and preds_matrix[i,j] == max_col:
+                            pred_labels_matrix[i,j] = 1
+                    elif strategy == "one-to-many":
+                        max_row = max(preds_matrix[i,:])
+                        if preds_matrix[i,j] == max_row:
+                            pred_labels_matrix[i,j] = 1
     df_pred = pd.DataFrame(preds_matrix,columns=df2_cols,index=df1_cols)
     df_pred_labels = pd.DataFrame(pred_labels_matrix,columns=df2_cols,index=df1_cols)
     for i in range(len(df_pred_labels)):
@@ -50,11 +58,12 @@ def create_similarity_matrix(pth,preds,pred_labels_list,strategy="one-to-many"):
                 predicted_pairs.append((df_pred.index[i],df_pred.columns[j],df_pred.iloc[i,j]))
     return df_pred,df_pred_labels,predicted_pairs
 
-if __name__ == '__main__':
-    pth = args.path
-    model_pth = args.model
+def schema_matching(pth,model_pth,threshold=None,strategy="many-to-many"):
+    """
+    Do schema matching!
+    """
     # transform jsonl or json file to csv
-    for file in os.listdir(args.path):
+    for file in os.listdir(pth):
         if file.endswith('.json') or file.endswith('.jsonl'):
             make_csv_from_json(pth+"/"+file)
 
@@ -62,11 +71,10 @@ if __name__ == '__main__':
     preds = []
     pred_labels_list = []
     for i in range(len(os.listdir(model_pth))//2):
-        print("start using model " + str(i))
         bst = xgb.Booster({'nthread': 4})  # init model
         bst.load_model(model_pth+"/"+str(i)+".model")
-        if args.threshold is not None:
-            best_threshold = float(args.threshold)
+        if threshold is not None:
+            best_threshold = float(threshold)
         else:
             with open(model_pth+"/"+str(i)+".threshold",'r') as f:
                 best_threshold = float(f.read())
@@ -75,9 +83,16 @@ if __name__ == '__main__':
         pred_labels_list.append(pred_labels)
         del bst
 
-    df_pred,df_pred_labels,predicted_pairs = create_similarity_matrix(pth,preds,pred_labels_list,strategy=args.strategy)
-    df_pred.to_csv(pth+"/similarity_matrix_value.csv",index=True)
-    df_pred_labels.to_csv(pth+"/similarity_matrix_label.csv",index=True)
+    df_pred,df_pred_labels,predicted_pairs = create_similarity_matrix(pth,preds,pred_labels_list,strategy=strategy)
+    return df_pred,df_pred_labels,predicted_pairs
+
+if __name__ == '__main__':
+    start = time.time()
+    args.path = args.path.rstrip("/")
+    df_pred,df_pred_labels,predicted_pairs = schema_matching(args.path,args.model,threshold=args.threshold,strategy=args.strategy)
+    df_pred.to_csv(args.path+"/similarity_matrix_value.csv",index=True)
+    df_pred_labels.to_csv(args.path+"/similarity_matrix_label.csv",index=True)
 
     for pair_tuple in predicted_pairs:
         print(pair_tuple)
+    print("schema_matching|Time taken:",time.time()-start)

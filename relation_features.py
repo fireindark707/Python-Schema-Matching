@@ -23,7 +23,7 @@ random.seed(seed)
 
 def preprocess_text(text):
     text = text.lower()
-    text = re.split(r'[\s\-\_\.]', text)
+    text = re.split(r'[\s\_\.]', text)
     text = " ".join(text).strip()
     return text
 
@@ -75,14 +75,14 @@ def make_combinations_labels(columns1, columns2, mapping ,type="train"):
                 del labels[(c1, c2)]
     return labels
 
-def get_colnames_features(text1,text2):
+def get_colnames_features(text1,text2,column_name_embeddings):
     """
     Use BLEU, edit distance and word2vec to calculate features.
     """
     bleu_score = bleu([text1], text2, smoothing_function=smoothie)
     edit_distance = damerau.distance(text1, text2)
     lcs = metriclcs.distance(text1, text2)
-    transformer_score = transformer_similarity(text1, text2)
+    transformer_score = util.cos_sim(column_name_embeddings[text1], column_name_embeddings[text2])
     one_in_one = text1 in text2 or text2 in text1
     colnames_features = np.array([bleu_score, edit_distance, lcs,transformer_score, one_in_one])
     return colnames_features
@@ -112,6 +112,8 @@ def make_data_from(folder_path,type="train"):
     table1_features = make_self_features_from(table1)
     table2_features = make_self_features_from(table2)
 
+    column_name_embeddings = {preprocess_text(k):model.encode(preprocess_text(k)) for k in columns1+columns2}
+
     additional_feature_num = 6
     output_feature_table = np.zeros((len(combinations_labels), table1_features.shape[1] - 768+ additional_feature_num), dtype=np.float32)
     output_labels = np.zeros(len(combinations_labels), dtype=np.int32)
@@ -122,7 +124,7 @@ def make_data_from(folder_path,type="train"):
         difference_features_percent = np.abs(table1_features[c1] - table2_features[c2]) / (table1_features[c1] + table2_features[c2] + 1e-8)
         c1_name = preprocess_text(c1_name)
         c2_name = preprocess_text(c2_name)
-        colnames_features = get_colnames_features(c1_name, c2_name)
+        colnames_features = get_colnames_features(c1_name, c2_name,column_name_embeddings)
         instance_similarity = get_instance_similarity(table1_features[c1][-768:], table2_features[c2][-768:])
         output_feature_table[i,:] = np.concatenate((difference_features_percent[:-768], colnames_features,instance_similarity))
         output_labels[i] = label
