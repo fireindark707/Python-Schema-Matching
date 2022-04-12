@@ -1,0 +1,17 @@
+,data.title,qas.question,qas.id,answers.text,answers.answer_start,qas.is_impossible,plausible_answers.text,plausible_answers.answer_start,paragraphs.context
+questions.body,0,1,0,0,0,0,0,0,0
+questions.documents,0,0,0,0,0,0,0,0,0
+questions.ideal_answer,0,0,0,0,0,0,0,0,0
+questions.concepts,0,1,0,0,0,0,0,0,0
+questions.type,0,0,0,0,0,0,0,0,0
+questions.id,0,0,1,0,0,0,0,0,0
+snippets.offsetInBeginSection,0,0,0,0,1,0,0,0,0
+snippets.offsetInEndSection,0,0,0,0,1,0,0,0,0
+snippets.text,0,0,0,0,0,0,0,0,0
+snippets.beginSection,0,0,0,0,0,0,0,0,0
+snippets.document,0,0,0,0,0,0,0,0,0
+snippets.endSection,0,0,0,0,0,0,0,0,0
+triples.p,0,0,0,0,0,0,0,0,0
+triples.s,0,0,0,0,0,0,0,0,0
+triples.o,0,0,0,0,0,0,0,0,0
+questions.exact_answer,0,0,0,1,0,0,1,0,0
