@@ -33,9 +33,9 @@ df_pred,df_pred_labels,predicted_pairs = schema_matching("Test Data/authors")
 ```
 
 #### Return:
-df_pred: Predict value matrix, pd.DataFrame.
-df_pred_labels: Predict label matrix, pd.DataFrame.
-predicted_pairs: Predict label == 1 column pairs, in tuple format.
+- df_pred: Predict value matrix, pd.DataFrame.
+- df_pred_labels: Predict label matrix, pd.DataFrame.
+- predicted_pairs: Predict label == 1 column pairs, in tuple format.
 
 #### Parameters:
 - pth: Path to test data folder, must contain **"Table1.csv" and "Table2.csv" or "Table1.json" and "Table2.json"**.
