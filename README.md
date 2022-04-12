@@ -29,7 +29,7 @@ Schema matching is the problem of finding potential associations between element
 pip install schema-matching
 ```
 
-### Conduct schema matching
+### Example
 
 ```
 from schema_matching import schema_matching
