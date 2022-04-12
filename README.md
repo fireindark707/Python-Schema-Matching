@@ -1,4 +1,4 @@
-[![PyPI version](https://badge.fury.io/py/schema-matching.svg)](https://pypi.org/project/schema-matching/)
+[![PyPI version](https://badge.fury.io/py/schema-matching.svg)](https://pypi.org/project/schema-matching/) 
 
 # Schema Matching by XGboost and Sentence-Transformers
 
