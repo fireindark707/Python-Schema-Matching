@@ -34,7 +34,11 @@ pip install schema-matching
 ```
 from schema_matching import schema_matching
 
-df_pred,df_pred_labels,predicted_pairs = schema_matching("Test Data/authors")
+df_pred,df_pred_labels,predicted_pairs = schema_matching("Test Data/QA/Table1.json","Test Data/QA/Table2.json")
+print(df_pred)
+print(df_pred_labels)
+for pair_tuple in predicted_pairs:
+    print(pair_tuple)
 ```
 
 #### Return:
@@ -43,7 +47,8 @@ df_pred,df_pred_labels,predicted_pairs = schema_matching("Test Data/authors")
 - predicted_pairs: Predict label == 1 column pairs, in tuple format.
 
 #### Parameters:
-- pth: Path to test data folder, must contain **"Table1.csv" and "Table2.csv" or "Table1.json" and "Table2.json"**.
+- table1_pth: Path to your first **csv, json or jsonl file**.
+- table2_pth: Path to your second **csv, json or jsonl file**.
 - threshold: Threshold, you can use this parameter to specify threshold value, suggest 0.9 for easy matching(column name very similar). Default value is calculated from training data, which is around 0.15-0.2. This value is used for difficult matching(column name masked or very different).
 - strategy: Strategy, there are three options: "one-to-one", "one-to-many" and "many-to-many". "one-to-one" means that one column can only be matched to one column. "one-to-many" means that columns in Table1 can only be matched to one column in Table2. "many-to-many" means that there is no restrictions. Default is "many-to-many".
 - model_pth: Path to trained model folder, which must contain at least one pair of ".model" file and ".threshold" file. You don't need to specify this parameter.
