@@ -1,9 +1,10 @@
+import init
 import pandas as pd
 import numpy as np
 import re
-from dateutil.parser import parse as parse_date
 import random
-
+from dateutil.parser import parse as parse_date
+model = init.model
 unit_dict = {"万": 10000, "亿": 100000000, "萬": 10000, "億": 100000000, "K+": 1000, "M+": 1000000, "B+": 1000000000}
 
 def load_table(filepath):
@@ -153,6 +154,18 @@ def character_features(data_list):
                      np.var(whitespace_ratios)/np.mean(whitespace_ratios), np.var(punctuation_ratios)/np.mean(punctuation_ratios),
                         np.var(special_character_ratios)/np.mean(special_character_ratios), np.var(numeric_ratios)/np.mean(numeric_ratios)])
 
+def deep_embedding(data_list):
+    """
+    Extracts deep embedding features from the given data using sentence-transformers.
+    """
+    if len(data_list) < 20:
+        selected_data = data_list
+    else:
+        selected_data = random.sample(data_list,20)
+    embeddings = [model.encode(str(data)) for data in selected_data]
+    embeddings = np.array(embeddings)
+    return np.mean(embeddings, axis=0)
+
 def extract_features(data_list):
     """
     Extract some features from the given data(column) or list
@@ -181,12 +194,14 @@ def extract_features(data_list):
         num_fts = np.array([-1]*6)
     # If data is not numeric, give length features
     length_fts = numeric_features([len(str(d)) for d in data_list])
-    # Give character features if the data is string
+    # Give character features and deep embeddings if the data is string
     if data_type == "string" or (not strict_numeric(data_list) and  mainly_numeric(data_list)):
         char_fts = character_features(data_list)
+        deep_fts = deep_embedding(data_list)
     else:
         char_fts = np.array([-1]*8)
-    output_features = np.concatenate((data_type_feature, num_fts, length_fts, char_fts))
+        deep_fts = np.array([-999]*768)
+    output_features = np.concatenate((data_type_feature, num_fts, length_fts, char_fts, deep_fts))
     return output_features
 
 def make_self_features_from(filepath):

@@ -1,6 +1,7 @@
+import init
 import pandas as pd
 import numpy as np
-from torch import cosine_similarity
+from numpy.linalg import norm
 from self_features import make_self_features_from
 import random
 import os
@@ -9,24 +10,27 @@ from strsimpy.metric_lcs import MetricLCS
 from strsimpy.damerau import Damerau
 from nltk.translate import bleu
 from nltk.translate.bleu_score import SmoothingFunction
-from sentence_transformers import SentenceTransformer, util
+from sentence_transformers import util
 import re
 
-model = SentenceTransformer('paraphrase-multilingual-mpnet-base-v2')
+model = init.model
+
 smoothie = SmoothingFunction().method4
 metriclcs = MetricLCS()
 damerau = Damerau()
 seed = 200
 random.seed(seed)
 
+def preprocess_text(text):
+    text = text.lower()
+    text = re.split(r'[\s\-\_\.]', text)
+    text = " ".join(text).strip()
+    return text
+
 def transformer_similarity(text1, text2):
     """
     Use sentence transformer to calculate similarity between two sentences.
     """
-    text1,text2 = text1.lower(), text2.lower()
-    text1 = re.split(r'[\s\-\_\.]', text1)
-    text1 = " ".join(text1).strip()
-    text2 = " ".join(text2).strip()
     embeddings1 = model.encode(text1)
     embeddings2 = model.encode(text2)
     cosine_similarity = util.cos_sim(embeddings1, embeddings2)
@@ -83,6 +87,13 @@ def get_colnames_features(text1,text2):
     colnames_features = np.array([bleu_score, edit_distance, lcs,transformer_score, one_in_one])
     return colnames_features
 
+def get_instance_similarity(embeddings1, embeddings2):
+    """
+    Use cosine similarity between two sentences.
+    """
+    cosine_similarity = np.inner(embeddings1, embeddings2) / (norm(embeddings1) * norm(embeddings2))
+    return np.array([cosine_similarity])
+
 def make_data_from(folder_path,type="train"):
     """
     Read data from folder and make relational features and labels as a matrix.
@@ -101,21 +112,24 @@ def make_data_from(folder_path,type="train"):
     table1_features = make_self_features_from(table1)
     table2_features = make_self_features_from(table2)
 
-    additional_feature_num = 5
-    output_feature_table = np.zeros((len(combinations_labels), table1_features.shape[1]*1 + additional_feature_num), dtype=np.float32)
+    additional_feature_num = 6
+    output_feature_table = np.zeros((len(combinations_labels), table1_features.shape[1] - 768+ additional_feature_num), dtype=np.float32)
     output_labels = np.zeros(len(combinations_labels), dtype=np.int32)
     for i, (combination,label) in enumerate(combinations_labels.items()):
         c1_name, c2_name = combination
         c1 = columns1.index(c1_name)
         c2 = columns2.index(c2_name)
         difference_features_percent = np.abs(table1_features[c1] - table2_features[c2]) / (table1_features[c1] + table2_features[c2] + 1e-8)
+        c1_name = preprocess_text(c1_name)
+        c2_name = preprocess_text(c2_name)
         colnames_features = get_colnames_features(c1_name, c2_name)
-        output_feature_table[i,:] = np.concatenate((difference_features_percent, colnames_features))
+        instance_similarity = get_instance_similarity(table1_features[c1][-768:], table2_features[c2][-768:])
+        output_feature_table[i,:] = np.concatenate((difference_features_percent[:-768], colnames_features,instance_similarity))
         output_labels[i] = label
         # add column names mask for training data
         if type == "train" and i % 5 == 0:
             colnames_features = np.array([0,12,0,0.2,0])
-            added_features = np.concatenate((difference_features_percent, colnames_features))
+            added_features = np.concatenate((difference_features_percent[:-768], colnames_features, instance_similarity))
             added_features = added_features.reshape((1, added_features.shape[0]))
             output_feature_table = np.concatenate((output_feature_table, added_features), axis=0)
             output_labels = np.concatenate((output_labels, np.array([label])))

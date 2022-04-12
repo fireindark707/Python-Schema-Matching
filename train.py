@@ -12,17 +12,17 @@ feature_names = ["is_url","is_numeric","is_date","is_string","numeric:mean", "nu
                 "length:mean", "length:min", "length:max", "length:variance","length:cv", "length:unique/len(data_list)",
                 "whitespace_ratios:mean","punctuation_ratios:mean","special_character_ratios:mean","numeric_ratios:mean",
                 "whitespace_ratios:cv","punctuation_ratios:cv","special_character_ratios:cv","numeric_ratios:cv",
-                "colname:bleu_score", "colname:edit_distance","colname:lcs","colname:tsm_cosine", "colname:one_in_one"
+                "colname:bleu_score", "colname:edit_distance","colname:lcs","colname:tsm_cosine", "colname:one_in_one","instance_similarity:cosine",
                 ]
 
 params = {
-        'max_depth': 3,
-        'eta': 0.03,
+        'max_depth': 4,
+        'eta': 0.1,
         'objective': 'binary:logistic',
-        'eval_metric': 'auc',
+        'eval_metric': 'logloss',
     }
 
-def train(train_features,train_labels,num_round=900):
+def train(train_features,train_labels,num_round):
     dtrain = xgb.DMatrix(train_features, label=train_labels)
     bst = xgb.train(params, dtrain, num_round)
     # get best_threshold
@@ -89,7 +89,7 @@ def get_feature_importances(bst):
     importance = sorted(importance, key=lambda x: x[0][1], reverse=True)
     return importance
 
-def train_loop(num_round=900):
+def train_loop(num_round=300):
     precision_list = []
     recall_list = []
     f1_list = []
@@ -100,8 +100,6 @@ def train_loop(num_round=900):
         bst, best_threshold = train(train_features, train_labels, num_round)
         precision, recall, f1, c_matrix = test(bst,best_threshold, test_features, test_labels)
         feature_importance = get_feature_importances(bst)
-        #print(f"Positive rate in Training: {sum(train_labels)/len(train_labels)*100:.2f}%")
-        #print(f"Positive rate in Testing: {sum(test_labels)/len(test_labels)*100:.2f}%")
         c_matrix_norm = c_matrix.astype('float') / c_matrix.sum(axis=1)[:, np.newaxis]
         precision_list.append(precision)
         recall_list.append(recall)
@@ -111,8 +109,6 @@ def train_loop(num_round=900):
         bst.save_model(model_save_pth+f"/{i}.model")
         with open(model_save_pth+f"/{i}.threshold",'w') as f:
             f.write(str(best_threshold))
-    #print(f1_list)
-    #print(np.mean(c_matrix_list,axis=0))
     # evaluate feature importance
     feature_name_importance = {}
     for feature_importance in feature_importance_list:
@@ -133,11 +129,15 @@ def optimize_hyperparameter(eta_candid,max_depth_candid,num_round_candid):
                 params["eta"] = eta
                 params["max_depth"] = max_depth
                 precision_list, recall_list, f1_list, c_matrix_list, feature_name_importance = train_loop(num_round)
+                print("Average Precision: %.3f" % np.mean(precision_list))
+                print("Average Recall: %.3f" % np.mean(recall_list))
+                print("Average F1: %.3f" % np.mean(f1_list))
                 if np.mean(f1_list) > best_f1:
                     best_f1 = np.mean(f1_list)
                     best_params = params
                     best_precision = np.mean(precision_list)
                     best_recall = np.mean(recall_list)
+    best_params["num_round"] = num_round
     return best_params, best_precision, best_recall, best_f1
     
 
@@ -145,17 +145,6 @@ if __name__ == '__main__':
     model_save_pth = "model/"+datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
     if not os.path.exists(model_save_pth):
         os.makedirs(model_save_pth)
-
-    # tune parameters
-    if False:
-        eta_candidate = [0.3,0.2,0.15,0.1,0.08,0.05,0.03]
-        max_depth_candidate = [5,10,15,20,25,30,35,40,45,50]
-        num_round_candidate = [100,200,300,400,500,600,700,800,900,1000]
-        best_params,best_precision, best_recall, best_f1 = optimize_hyperparameter(eta_candidate,max_depth_candidate,num_round_candidate)
-        print(best_params)
-        print(best_precision)
-        print(best_recall)
-        print(best_f1)
 
     precision_list, recall_list, f1_list, c_matrix_list, feature_name_importance = train_loop()
     # give evaluation results
@@ -167,3 +156,14 @@ if __name__ == '__main__':
     print("Feature Importance:")
     for importance in feature_name_importance:
         print(f"{importance[0]}: {importance[1]}")
+
+    # tune parameters
+    if False:
+        eta_candidate = [0.08,0.05,0.03, 0.01]
+        max_depth_candidate = [3,4,5,6,7,8,9,10,12,15,20]
+        num_round_candidate = [100,200,300,400,500,600,700,800,900,1000]
+        best_params,best_precision, best_recall, best_f1 = optimize_hyperparameter(eta_candidate,max_depth_candidate,num_round_candidate)
+        print(best_params)
+        print(best_precision)
+        print(best_recall)
+        print(best_f1)
