@@ -1,0 +1,4 @@
+<Name, 產品名稱>
+<Location, 產地>
+<Price, 價錢>
+<In Stock, 庫存>

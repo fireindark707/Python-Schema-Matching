@@ -1,0 +1,5 @@
+<article_title, article_title>
+<article_id, article_id>
+<author, author>
+<view_number, hot>
+<summary, summary>

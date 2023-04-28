@@ -1,0 +1,19 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Schema Matching by XGboost
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: fireinfark707
+repository-code: >-
+  https://github.com/fireindark707/Schema_Matching_XGboost
+abstract: >-
+  Using XGboost to perform schema matching task on
+  tables. Support multi-language column names
+  matching and can be used without column names.
+license: MIT
+date-released: '2022-04-10'

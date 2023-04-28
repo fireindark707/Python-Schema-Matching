@@ -1,0 +1,7 @@
+,c_custkey,c_name,c_address,c_nationkey,c_phone,c_comment
+c_custkey,1,0,0,0,0,0
+c_name,0,1,0,0,0,0
+c_address,0,0,1,0,0,0
+c_nationkey,0,0,0,1,0,0
+c_phone,0,0,0,0,1,0
+c_comment,0,0,0,0,0,1

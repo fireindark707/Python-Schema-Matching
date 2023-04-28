@@ -1,0 +1,8 @@
+<title, title>
+<introduction, what_we_love>
+<link, deep_link>
+<price, sell_price>
+<booking_date, start_time>
+<rating_star, review_star>
+<rating_count, review_count>
+<country, location_title>
