@@ -19,7 +19,7 @@ feature_names = ["is_url","is_numeric","is_date","is_string","numeric:mean", "nu
 
 params = {
         'max_depth': 4,
-        'eta': 0.05,
+        'eta': 0.1,
         'objective': 'binary:logistic',
         'eval_metric': 'logloss',
     }
@@ -149,7 +149,7 @@ if __name__ == '__main__':
     if not os.path.exists(model_save_pth):
         os.makedirs(model_save_pth)
 
-    precision_list, recall_list, f1_list, c_matrix_list, feature_name_importance = train_loop(num_round=300)
+    precision_list, recall_list, f1_list, c_matrix_list, feature_name_importance = train_loop(num_round=500)
     # give evaluation results
     print("Average Precision: %.3f" % np.mean(precision_list))
     print("Average Recall: %.3f" % np.mean(recall_list))

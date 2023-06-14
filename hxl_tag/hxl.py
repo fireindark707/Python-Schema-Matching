@@ -54,7 +54,7 @@ class HXLTagger():
             if len(examples_list_string) > 120 or i >= 9:
                 break
         examples_list_string = examples_list_string[:-2]
-        prompt = f"Column name: {column_name} Examples: [{examples_list_string}] HXL_tag: "
+        prompt = f"Column Name: {column_name} Examples: [{examples_list_string}]"
         tags = self.generate([prompt])
         return tags[0]
     
@@ -78,19 +78,19 @@ class HXLTagger():
 
 if __name__ == "__main__":
     randome_tests = [
-        "Column name: 链接 Examples: ['www.google.com', 'www.sohu.com', 'www.yahoo.com'] HXL_tag: ",
-        "Column name: 电影名称 Examples: ['急速时刻', '变形金刚', '阿甘正传'] HXL_tag: ",
-        "Column name: 坪数 Examples: ['5', '3', '6', '8'] HXL_tag: ", 
-        "Column name: Authors Examples: ['Zeisel A.', 'Farlik M.', 'Smallwood S.', 'Blaschke K.'] HXL_tag: ", 
-        "Column name: 國家 Examples: ['USA', 'UK', 'IR', 'AUS', 'SA', 'KR', 'JP'] HXL_tag: ",
-        "Column name: 人名 Examples: ['James Bond', 'Robin Sun', 'kevin Zhang', 'Green David'] HXL_tag: ",
-        "Column name: Color Examples: ['0xfe0302', '0xffffff', '0xffffff'] HXL_tag: ",
-        "Column name: 售價 Examples: ['20.0', '31.0', '499.0'] HXL_tag: ",
-        "Column name: City Examples: ['New york', 'London', 'Shanghai'] HXL_tag: ",
-        "Column name: Total Assets Examples: ['272557.05', '344085.12', '367482.39', '389506.24', '441684.56'] HXL_tag: ",
-        "Column name: Total Non-Current Assets Examples: ['179837.14', '233704.42', '249336.4 ', '265197.07', '272331.12'] HXL_tag: ",
-        "Column name: Total Equity Examples: ['152647.22', '197379.46', '208461.87', '218830.05', '225654.67'] HXL_tag: ",
-        "Column name: Equity Attributable to Parent Stockholders  Examples: ['136348.2 ', '181541.51', '193684.07', '204071.82', '204477.33'] HXL_tag: ",
+        "Column Name: 链接 Examples: ['www.google.com', 'www.sohu.com', 'www.yahoo.com']",
+        "Column Name: 电影名称 Examples: ['急速时刻', '变形金刚', '阿甘正传']",
+        "Column Name: 坪数 Examples: ['5', '3', '6', '8']", 
+        "Column Name: Authors Examples: ['Zeisel A.', 'Farlik M.', 'Smallwood S.', 'Blaschke K.']", 
+        "Column Name: 國家 Examples: ['USA', 'UK', 'IR', 'AUS', 'SA', 'KR', 'JP']",
+        "Column Name: 人名 Examples: ['James Bond', 'Robin Sun', 'kevin Zhang', 'Green David']",
+        "Column Name: Color Examples: ['0xfe0302', '0xffffff', '0xffffff']",
+        "Column Name: 售價 Examples: ['20.0', '31.0', '499.0']",
+        "Column Name: City Examples: ['New york', 'London', 'Shanghai']",
+        "Column Name: Total Assets Examples: ['272557.05', '344085.12', '367482.39', '389506.24', '441684.56']",
+        "Column Name: Total Non-Current Assets Examples: ['179837.14', '233704.42', '249336.4 ', '265197.07', '272331.12']",
+        "Column Name: Total Equity Examples: ['152647.22', '197379.46', '208461.87', '218830.05', '225654.67']",
+        "Column Name: Equity Attributable to Parent Stockholders  Examples: ['136348.2 ', '181541.51', '193684.07', '204071.82', '204477.33']",
     ]
     tests2 = [
         {
