@@ -3,7 +3,7 @@
 > HXL-style tag version: https://github.com/fireindark707/Python-Schema-Matching/tree/hxl_tag   
 > HDXSM Datasets: https://drive.google.com/file/d/1wPXFS1ZLi6Xf7_aRZU1Jw_-dJrggs1Ox/view?usp=sharing
 
-# Python Schema Matching by XGboost and Sentence-Transformers
+# SMUTF: Schema Matching Using Generative Tags and Hybrid Features
 
 A python tool using XGboost and sentence-transformers to perform schema matching task on tables. Support multi-language column names and instances matching and can be used without column names. Both csv and json file type are supported.
 
