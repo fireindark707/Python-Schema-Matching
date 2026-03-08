@@ -1,11 +1,13 @@
 [![PyPI version](https://badge.fury.io/py/schema-matching.svg)](https://pypi.org/project/schema-matching/) 
 
-> HXL-style tag version: https://github.com/fireindark707/Python-Schema-Matching/tree/hxl_tag   
-> HDXSM Datasets: [https://drive.google.com/file/d/1wPXFS1ZLi6Xf7_aRZU1Jw_-dJrggs1Ox/view?usp=sharing](https://drive.google.com/file/d/1xgK0MyZwlekoHp9OtLy28eccOx59NC0W/view?usp=sharing)
+
 
 # SMUTF: Schema Matching Using Generative Tags and Hybrid Features
+This is the code of the paper [SMUTF](https://arxiv.org/abs/2402.01685). You can use this repo to reproduce the results in the paper.
 
-A python tool using XGboost and sentence-transformers to perform schema matching task on tables. Support multi-language column names and instances matching and can be used without column names. Both csv and json file type are supported.
+## Abstract
+We introduce SMUTF, a unique approach for large-scale tabular data schema matching (SM), which assumes that supervised learning does not affect performance in open-domain tasks, thereby enabling effective cross-domain matching. This system uniquely combines rule-based feature engineering, pre-trained language models, and generative large language models. In an innovative adaptation inspired by the Humanitarian Exchange Language, we deploy 'generative tags' for each data column, enhancing the effectiveness of SM. SMUTF exhibits extensive versatility, working seamlessly with any pre-existing pre-trained embeddings, classification methods, and generative models.
+Recognizing the lack of extensive, publicly available datasets for SM, we have created and open-sourced the HDXSM dataset from the public humanitarian data. We believe this to be the most exhaustive SM dataset currently available. In evaluations across various public datasets and the novel HDXSM dataset, SMUTF demonstrated exceptional performance, surpassing existing state-of-the-art models in terms of accuracy and efficiency, and} improving the F1 score by 11.84% and the AUC of ROC by 5.08%.
 
 ## What is schema matching?
 
@@ -127,14 +129,20 @@ Data: https://github.com/fireindark707/Schema_Matching_XGboost/tree/main/Test%20
 
 **F1 score: 0.889**
 
+## HDXSM Datasets
+You can download our HDXSM Datasets from [Google Drive](https://drive.google.com/file/d/1xgK0MyZwlekoHp9OtLy28eccOx59NC0W/view?usp=sharing). You can find the HXL-style tag version from [Link](https://github.com/fireindark707/Python-Schema-Matching/tree/hxl_tag).
+
+
+
 ## Cite
 ```
-@software{fireinfark707_Schema_Matching_by_2022,  
-author = {fireinfark707},  
-license = {MIT},  
-month = {4},  
-title = {{Schema Matching by XGboost}},  
-url = {https://github.com/fireindark707/Schema_Matching_XGboost},  
-year = {2022}  
+@misc{zhang2024smutfschemamatchingusing,
+      title={SMUTF: Schema Matching Using Generative Tags and Hybrid Features}, 
+      author={Yu Zhang and Mei Di and Haozheng Luo and Chenwei Xu and Richard Tzong-Han Tsai},
+      year={2024},
+      eprint={2402.01685},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2402.01685}, 
 }
 ```
