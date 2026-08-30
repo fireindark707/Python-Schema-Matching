@@ -16,15 +16,15 @@ Recognizing the lack of extensive, publicly available datasets for SM, we have c
 Schema matching is the problem of finding potential associations between elements (most often attributes or relations) of two schemas. 
 [source](https://link.springer.com/referenceworkentry/10.1007/978-3-319-77525-8_20)
 
-## Dependencies
+## Dependencies (Python 3.8-3.11)
 
-- numpy==1.19.5
-- pandas==1.1.5
-- nltk==3.6.5
-- python-dateutil==2.8.2
-- sentence-transformers==2.1.0
-- xgboost==1.5.2
-- strsimpy==0.2.1
+- numpy>=1.23.5
+- pandas>=1.5.0
+- nltk>=3.8.2
+- python-dateutil>=2.8.2
+- sentence-transformers>=2.2.2
+- xgboost>=1.7.4
+- strsimpy>=0.2.1
 
 ## Package usage
 
